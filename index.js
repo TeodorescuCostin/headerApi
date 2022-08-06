@@ -22,14 +22,14 @@ const { Web3Storage, getFilesFromPath } = require('web3.storage');
 // connecting to the web3.storage account
 
 function makeStorageClient () {
-  return new Web3Storage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY5MTg0MURjOUYxMUM1Nzk0Q0Y0YTA2Zjc1NDg3N0M1MzM5MTIwNEMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTk1NzM1MjMyNzQsIm5hbWUiOiJIZWFkZXJUZXN0In0.yBvdu-zspSXiBR6HtXkJGTLEhZ_31Rq1eg-ZWXhCf14' })
+  return new Web3Storage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdGNTI5MmRDMTQ0MjBCODA4RTg4Mjc2QTVlNkM0ZDBDRTREMERmNUEiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTk4MDc2MDgyNDEsIm5hbWUiOiJIZWFkZXIifQ.RsIfl9b4293_51qxzWy4SklR7GQCWSKITpdFd9mGDlk' })
 }
 
 var pathFile
 var nameFile
 var dataJson
 
-async function getLastData () {
+async function getLastData (id) {
   const client = makeStorageClient()
 
   // get today's date
@@ -40,7 +40,7 @@ async function getLastData () {
   const before = d.toISOString()
 
   // limit to ten results
-  const maxResults = 10
+  const maxResults = 10+id
 
   var data = []
 
@@ -49,10 +49,9 @@ async function getLastData () {
   }
 
   // get the first file from the list and prepare it in the corect format
-
-  pathFile = data[0].cid
-  nameFile = data[0].name
-  const url = 'https://' + pathFile + '.ipfs.dweb.link/' + nameFile
+  const arraySize = data.length
+  pathFile = data[(-1)*(id-arraySize)].cid
+  const url = 'https://' + pathFile + '.ipfs.dweb.link/' + id + ".json"
 
   // fetching the json uploaded on web3.storgae and prepare it in the corect way
 
@@ -66,39 +65,18 @@ async function getLastData () {
   console.log(dataJson)
 }
 
-getLastData()
+
 
 // send the request with the JSON that includes all the data
 
-app.get('/api/request', (req,res) => {
+app.get('/api/request/:dynamic', (req,res) => {
 
+  const {dynamic} = req.params
+  getLastData(dynamic)
   res.json(dataJson)
 
 })
 
-// send the request with the picture
-
-app.get('/api/request/picture', (req,res) => {
-
-  res.send(dataJson.imageLink)
-
-})
-
-// send the request with the content
-
-app.get('/api/request/content', (req,res) => {
-
-  res.send(dataJson.content)
-
-})
-
-// send the request with the hashtags
-
-app.get('/api/request/hashtags', (req,res) => {
-
-  res.send(dataJson.hashtags)
-
-})
 
 // running the frontend 
 
