@@ -51,6 +51,7 @@ async function getLastData (id) {
   // get the first file from the list and prepare it in the corect format
   const arraySize = data.length
   pathFile = data[(-1)*(id-arraySize)].cid
+  console.log(data[(-1)*(id-arraySize)])
   const url = 'https://' + pathFile + '.ipfs.dweb.link/' + id + ".json"
 
   // fetching the json uploaded on web3.storgae and prepare it in the corect way
