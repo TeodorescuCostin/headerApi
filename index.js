@@ -58,12 +58,12 @@ async function getLastData (id) {
 
   fetch(url)
     .then(res => res.json())
-    .then(out => dataJson = out)
+    .then(out => dataJson = url)
     .catch(function(ex) {
       console.log('parsing failed', ex)
     })
 
-  console.log(dataJson)
+  console.log(url)
 }
 
 
