@@ -56,14 +56,16 @@ async function getLastData (id) {
 
   // fetching the json uploaded on web3.storgae and prepare it in the corect way
 
-  fetch(url)
-    .then(res => res.json())
-    .then(out => dataJson = url)
-    .catch(function(ex) {
-      console.log('parsing failed', ex)
-    })
+  // fetch(url)
+  //   .then(res => res.json())
+  //   .then(out => dataJson = out)
+  //   .catch(function(ex) {
+  //     console.log('parsing failed', ex)
+  //   })
+  dataJson = url
 
-  console.log(url)
+
+  console.log(dataJson)
 }
 
 
